@@ -104,9 +104,9 @@ int main()
     grapher.setZAxisLabel("f(hw,t)");
     grapher.setTitle("luminescence spectra");
 
-    //  3.  Add object and Plot !
+    //  3.  Link object and Plot !
     //  U can use mouse inside window to change size, location and more
-    grapher.add(&surface);
+    grapher.link(&surface);
     grapher.plotQT("3D Image");
 
     //-------------------------------------
@@ -129,7 +129,7 @@ int main()
     {
         TwoArgumentsFunction_Plot *tmp = new TwoArgumentsFunction_Plot(S_solv, hw, t);
         objects.push_back(tmp);
-        grapher2.add(objects.back());
+        grapher2.link(objects.back());
         grapher2.newFrame();
     }
 

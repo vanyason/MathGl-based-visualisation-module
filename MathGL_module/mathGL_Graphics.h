@@ -29,7 +29,7 @@ class MathGLGraphics : public mglDraw
 public:
     MathGLGraphics();
 
-    //  Methods to add objects to graphics
+    //  Methods to link objects to graphics
     /**
      * Creates new blank frame. All the objects added before stays on the previous frame.
      * All the graph properties remains
@@ -46,7 +46,7 @@ public:
      *
      * The solution is to pass a reference to an object created before calling;
      */
-    void add(const MathGLGraphicsObject *obj);
+    void link(const MathGLGraphicsObject *obj);
 
     //  Methods to visualize graphics
     /**

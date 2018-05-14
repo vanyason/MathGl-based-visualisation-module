@@ -16,7 +16,7 @@ void MathGLGraphics::newFrame()
 {
     objectsList.push_back(std::list<const MathGLGraphicsObject *>());
 }
-void MathGLGraphics::add(const MathGLGraphicsObject *obj)
+void MathGLGraphics::link(const MathGLGraphicsObject *obj)
 {
     objectsList.back().push_back(obj);
 }
