@@ -24,18 +24,18 @@ public:
 
 /**
  * Calculates data and prepare graph for
- * function with one argument
+ * function with one argument (2d Image)
  */
-class OneArgumentFunction : public MathGLGraphicsObject
+class OneArgumentFunction_Plot : public MathGLGraphicsObject
 {
 public:
     /**
-     * @param f Pointer to function, for example: double sin(double& x) { retrun sin(x); }
-     * @param farg Const reference to FunctionArg object
+     * @param f Pointer to function, for example: double sin(const double& x) { retrun sin(x); }
+     * @param FunctionArg object (arg1)
      * @param params String with plot parameters
      * Creates data arrays (MathGl instances) using parameters.
      */
-    OneArgumentFunction(double(*f)(const double &arg), const FunctionArg &farg, const char *params = "");
+    OneArgumentFunction_Plot(double(*f)(const double &arg), const FunctionArg &farg, const char *params = "");
     void draw(mglGraph *&gr) const override;
 private:
     double (*f)(const double &arg);
@@ -46,28 +46,69 @@ private:
 
 /**
  * Creates single-variable function graph
- * using syntax parser
+ * using syntax parser (2d Image)
  */
-class OneArgumentFunction_SyntaxParser : public MathGLGraphicsObject
+class OneArgumentFunction_Plot_SyntaxParser : public MathGLGraphicsObject
 {
 public:
-    OneArgumentFunction_SyntaxParser(const char *func, const char *params = "");
+    OneArgumentFunction_Plot_SyntaxParser(const char *func, const char *params = "");
     void draw(mglGraph *&gr) const override;
 private:
     const char *params;
     const char *func;
 };
 
+
 /**
  * Calculates data and prepare graph for
- * function with two argument
+ * function with two argument (2d Image)
+ *
+ * This object is a mix of OneArgumentObject and TwoArgumentsObject:
+ * It plots 2d Image of two args at the certain moment (like a snapshot),
+ * so one arg is changing and represented as a FunctionArg object and other one
+ * is constant and represented as a double variable
  */
-class TwoArgumentsFunction : public MathGLGraphicsObject
+class TwoArgumentsFunction_Plot : public MathGLGraphicsObject
 {
 public:
-    TwoArgumentsFunction(double (*f)(const double &arg1, const double &arg2),
-                         const FunctionArg &farg1, const FunctionArg &farg2,
-                         const char *params = "");
+    /**
+     *
+     * @param f Pointer to a function, for example: double f (const double &x, const double &y) { return sin(x) + y; }
+     * @param farg1 FunctionArg object arg1
+     * @param arg2 constant value of arg2
+     * @param params String with plot parameters
+     * Creates data arrays (MathGl instances) using parameters.
+     */
+    TwoArgumentsFunction_Plot(double (*f)(const double &arg1, const double &arg2),
+                              const FunctionArg &farg1, const double &arg2,
+                              const char *params = "");
+    void draw(mglGraph *&gr) const override;
+private:
+    double (*f)(const double &arg1, const double &arg2);
+    mglData arg;
+    mglData func;
+    const char *params;
+};
+
+
+/**
+ * Calculates data and prepare graph for
+ * function with two argument (3d Image)
+ */
+class TwoArgumentsFunction_Surf : public MathGLGraphicsObject
+{
+public:
+    /**
+     *
+     * @param f Pointer to a function, for example: double f (const double &x, const double &y) { return sin(x) + y; }
+     * @param farg1 FunctionArg object arg1
+     * @param farg2 FunctionArg object arg2
+     * @param params String with plot parameters
+     * Creates data arrays (MathGl instances) using parameters.
+     */
+    TwoArgumentsFunction_Surf(double (*f)(const double &arg1, const double &arg2),
+                              const FunctionArg &farg1, const FunctionArg &farg2,
+                              const char *params = "");
     void draw(mglGraph *&gr) const override;
 private:
     double (*f)(const double &arg1, const double &arg2);
@@ -77,10 +118,14 @@ private:
     const char *params;
 };
 
-class TwoArgumentsFunction_SyntaxParser : public MathGLGraphicsObject
+/**
+ * Creates two-variable function graph
+ * using syntax parser (3d Image)
+ */
+class TwoArgumentsFunction_Surf_SyntaxParser : public MathGLGraphicsObject
 {
 public:
-    TwoArgumentsFunction_SyntaxParser(const char *func, const char *params = "");
+    TwoArgumentsFunction_Surf_SyntaxParser(const char *func, const char *params = "");
     void draw(mglGraph *&gr) const override;
 private:
     const char *params;

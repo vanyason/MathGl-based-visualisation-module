@@ -37,6 +37,9 @@ int MathGLGraphics::Draw(mglGraph *gr)
     //  Loop which goes through frames and draws
     //  all the object in the frame
     //  (outer list = frames, inner list = objects)
+
+
+
     while (jt != objectsList.end())
     {
         it = jt->begin();
@@ -47,7 +50,9 @@ int MathGLGraphics::Draw(mglGraph *gr)
         //  Setting properties
         gr->Title(titleMessage);
 
-        gr->SetRanges(rx0, rx1, ry0, ry1, rz0, rz1);
+        if (rangeIsSet)
+            gr->SetRanges(rx0, rx1, ry0, ry1, rz0, rz1);
+
         if (originIsSet)
             gr->SetOrigin(ox, oy, oz);
         gr->Rotate(rx, ry, rz);
@@ -98,6 +103,7 @@ void MathGLGraphics::saveBMP()
  */
 void MathGLGraphics::setRanges(double x0, double x1, double y0, double y1, double z0, double z1)
 {
+    rangeIsSet = true;
     rx0 = x0;
     rx1 = x1;
     ry0 = y0;

@@ -83,9 +83,10 @@ private:
     //  Properties variables:
     //
     //  Range variables
-    double rx0 = -1., rx1 = 1.;
-    double ry0 = -1., ry1 = 1.;
-    double rz0 = -1., rz1 = 1.;
+    bool rangeIsSet = false;
+    double rx0, rx1;
+    double ry0, ry1;
+    double rz0, rz1;
 
     //  Origin variables
     bool originIsSet = false;

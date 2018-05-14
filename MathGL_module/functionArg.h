@@ -9,7 +9,8 @@
 /**
  * Function argument struct. It analyses input,
  * calculates step and dots amount. This class helps to create
- * data arrays
+ * data arrays. It is used to pass a changing value of an argument in some
+ * range
  */
 struct FunctionArg
 {
