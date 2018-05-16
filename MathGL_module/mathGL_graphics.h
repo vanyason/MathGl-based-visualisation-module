@@ -5,7 +5,8 @@
 #ifndef MATHGL_MODULE_MGLGRAPHICS_H
 #define MATHGL_MODULE_MGLGRAPHICS_H
 #include <mgl2/qt.h>
-#include "mathGL_Graphics_Object.h"
+#include "mathGL_graphics_object.h"
+#include "mathGL_graphics_frame_properties.h"
 #include <list>
 #include <string>
 
@@ -60,18 +61,9 @@ public:
      */
     void saveBMP();
 
-    //  Graphics properties
-    void setRanges(double x0 = -1., double x1 = 1.,
-                   double y0 = -1., double y1 = 1.,
-                   double z0 = -1., double z1 = 1.);
-    void setOrigin(double x = -1., double y = -1., double z = -1.);
-    void setRotation(double x, double y, double z);
-    void setTitle(const char *title);
-    void setXAxisLabel(const char *message);
-    void setYAxisLabel(const char *message);
-    void setZAxisLabel(const char *message);
-    void setBox(bool state);
-    void setAxis(bool state);
+    MathGLGraphicsFrameParametres& parametres();
+
+
 private:
     int Draw(mglGraph *gr) override;
 
@@ -80,31 +72,9 @@ private:
     //  inner list for graphic objects
     std::list<std::list<const MathGLGraphicsObject *>> objectsList;
 
-    //  Properties variables:
-    //
-    //  Range variables
-    bool rangeIsSet = false;
-    double rx0, rx1;
-    double ry0, ry1;
-    double rz0, rz1;
+    std::list<MathGLGraphicsFrameParametres> frameParameters;
 
-    //  Origin variables
-    bool originIsSet = false;
-    double ox = -1., oy = -1., oz = -1.;
 
-    //  Rotation variables
-    double rx = 0., ry = 0., rz = 0.;
-
-    //  Title
-    const char *titleMessage = "";
-
-    //  Label`s variables
-    const char *xlabelMes = "";
-    const char *ylabelMes = "";
-    const char *zlabelMes = "";
-
-    //  Box, Axis
-    bool boxisSet = true, axisIsSet = true;
 
     //  Save to bmp;
     bool saveImageBMP = false;
