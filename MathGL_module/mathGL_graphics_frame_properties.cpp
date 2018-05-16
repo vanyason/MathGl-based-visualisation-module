@@ -3,7 +3,7 @@
 //
 
 #include "mathGL_graphics_frame_properties.h"
-
+#include <iostream>
 /*
  * Base component
  */
@@ -13,7 +13,7 @@ void Parameter::draw(mglGraph *&gr)
     gr->Box();
 }
 Parameter::~Parameter()
-{}
+{std::cout<<"dest"<<std::endl;}
 /*
  * Decorators :
  */

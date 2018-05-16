@@ -7,7 +7,6 @@
 #include <mgl2/mgl.h>
 #include <memory>
 
-
 class Parameter
 {
 public:

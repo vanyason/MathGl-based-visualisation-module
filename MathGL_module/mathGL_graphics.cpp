@@ -6,10 +6,19 @@
 #include <iostream>
 
 MathGLGraphics::MathGLGraphics()
-        : objectsList(1) , frameParameters(1)
-{}
+        : objectsList(1), frameParameters(1)
+{
+    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
+    (*pt) = new MathGLGraphicsFrameParametres();
+}
+MathGLGraphics::~MathGLGraphics()
+{
+    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
+    while(pt!=frameParameters.end())
+        delete (*pt++);
+}
 
-MathGLGraphicsFrameParametres &MathGLGraphics::parametres()
+MathGLGraphicsFrameParametres *MathGLGraphics::parametres()
 {
     return frameParameters.back();
 }
@@ -20,7 +29,7 @@ MathGLGraphicsFrameParametres &MathGLGraphics::parametres()
 void MathGLGraphics::newFrame()
 {
     objectsList.push_back(std::list<const MathGLGraphicsObject *>());
-    frameParameters.push_back(MathGLGraphicsFrameParametres());
+    frameParameters.push_back(new MathGLGraphicsFrameParametres());
 }
 void MathGLGraphics::link(const MathGLGraphicsObject *obj)
 {
@@ -35,7 +44,7 @@ int MathGLGraphics::Draw(mglGraph *gr)
     //  Iterator that goes through outer list,
     //  which represents frames
     std::list<std::list<const MathGLGraphicsObject *>>::iterator jt = objectsList.begin();
-    std::list<MathGLGraphicsFrameParametres>::iterator pt = frameParameters.begin();
+    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
 
     //  Iterator, which goes though inner list,
     //  which represents MathGLGraphicObjects in a frame
@@ -53,7 +62,7 @@ int MathGLGraphics::Draw(mglGraph *gr)
         gr->NewFrame();
 
         //  Drawing parameters
-        pt->draw(gr);
+        (*pt)->draw(gr);
 
         //  Drawing graph objects
         while (it != jt->end())
@@ -73,7 +82,6 @@ int MathGLGraphics::Draw(mglGraph *gr)
         //  End of the frame;
         gr->EndFrame();
         jt++;
-
         pt++;
     }
     return gr->GetNumFrame();

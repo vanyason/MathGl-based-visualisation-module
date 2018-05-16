@@ -29,6 +29,7 @@ class MathGLGraphics : public mglDraw
 {
 public:
     MathGLGraphics();
+    ~MathGLGraphics();
 
     //  Methods to link objects to graphics
     /**
@@ -61,7 +62,7 @@ public:
      */
     void saveBMP();
 
-    MathGLGraphicsFrameParametres& parametres();
+    MathGLGraphicsFrameParametres *parametres();
 
 
 private:
@@ -72,8 +73,7 @@ private:
     //  inner list for graphic objects
     std::list<std::list<const MathGLGraphicsObject *>> objectsList;
 
-    std::list<MathGLGraphicsFrameParametres> frameParameters;
-
+    std::list<MathGLGraphicsFrameParametres *> frameParameters;
 
 
     //  Save to bmp;
