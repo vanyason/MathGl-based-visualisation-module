@@ -2,7 +2,7 @@
 // Created by ivan on 5/6/18.
 //
 
-#include "functionArg.h"
+#include "../include/functionArg.h"
 
 FunctionArg::FunctionArg(double v0, double v1, double h) :
         v0(v0),

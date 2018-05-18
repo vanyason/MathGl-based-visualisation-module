@@ -1,9 +1,9 @@
-#include "mathGL_graphics.h"
+#include "include/mathGL_graphics.h"
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <list>
-#include "mathGL_graphics_frame_properties.h"
+#include "include/mathGL_graphics_frame_properties.h"
 
 
 using namespace std;

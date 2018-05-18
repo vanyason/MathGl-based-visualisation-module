@@ -2,7 +2,7 @@
 // Created by ivan on 5/10/18.
 //
 
-#include "mathGL_graphics_object.h"
+#include "../include/mathGL_graphics_object.h"
 
 /*
  * MathGLGraphicsObject
