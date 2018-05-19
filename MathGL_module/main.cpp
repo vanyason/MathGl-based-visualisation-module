@@ -1,16 +1,17 @@
-#include "mathGL_Graphics.h"
-#include <iostream>
-#include <string>
+#include "include/mathGL_graphics.h"
 #include <cmath>
 #include <list>
+#include <string>
 
-using namespace std;
 
-/**
- * This code is an example of MathGl_Graphics module usage. Basics
- * are explained here.
+/**********************************************************
+ * This code is an example of MathGl_Graphics module usage.
+ * Module is used to visualize dynamics of luminescence
+ * spectra. All the equations can be found at:
  *
- * Module is used to visualize dynamics of luminescence spectra
+ **********************************************************
+ * Basics are explained on github/WIKI :
+ * https://github.com/vanyason/MathGl-based-visualisation-module/wiki
  */
 
 //  Variables
@@ -26,6 +27,11 @@ double Tl = 0.5;            //    [0.5]
 double Tv = 0.3;            //    [0.5 ; 5]
 
 //  Functions
+template<class T>
+const T &min(const T &a, const T &b)
+{
+    return !(b < a) ? a : b;
+}
 int factorial(int n)
 {
     return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
@@ -54,7 +60,6 @@ double S_solv(const double &hw, const double &t)
                 pow((Q_shrp(n0, m) + hw - 2 * L_s * exp(-t / Tl)), 2) /
                 (-4 * L_s * kT));
     }
-
     return A0 / sqrt(4 * M_PI * kT) * summ;
 }
 double S_vibr(const double &hw, const double &t)
@@ -80,71 +85,63 @@ double S_vibr(const double &hw, const double &t)
                      exp(-pow((Q_shrp(0, m) - 2 * L_s + hw), 2) / (4 * L_s * kT));
         }
     }
-
     return A0 / sqrt(4 * M_PI * L_s * kT) * (summ1 + summ2);
 }
 
-
-int main()
+//  I: Plotting S_solv surface
+void example1()
 {
-    //  Firstly I create QT window with a surface image to visualize S_vibr
-
-    //  1. Create grapher, graph object and arguments
-    MathGLGraphics grapher;
+    //  1) Creating objects;
     FunctionArg hw(0, 3, 200);
     FunctionArg t(0, 3, 200);
     TwoArgumentsFunction_Surf surface(S_vibr, hw, t);
+    MathGLGraphics grapher;
 
-    //  2.  Set properties. By default there is no rotation, ranges doesnt fit our purpose
-    //  and so on
-    grapher.setRotation(70, 40, 0);
-    grapher.setRanges(0, 3, 0, 3, -1, 3);
-    grapher.setXAxisLabel("hw");
-    grapher.setYAxisLabel("t");
-    grapher.setZAxisLabel("f(hw,t)");
-    grapher.setTitle("luminescence spectra");
+    //  2) Setting properties
+    grapher.parametres()->setRanges(0,3,0,3,0,3);
+    grapher.parametres()->setRotation(70,45);
+    grapher.parametres()->setXLabel("hw");
+    grapher.parametres()->setYLabel("t");
+    grapher.parametres()->setTitle("F(hw, t)");
 
-    //  3.  Link object and Plot !
-    //  U can use mouse inside window to change size, location and more
+    //  3) Link and plot
     grapher.link(&surface);
-    grapher.plotQT("3D Image");
+    grapher.plotQT("S_vibr");
+}
 
-    //-------------------------------------
+//  II: Plotting S_vibr animation
 
-    //  Now I `m animating S-solv
+void example2()
+{
+    //  1) Creating objects;
+    FunctionArg hw(0, 3, 200);
+    double t = 0;
+    MathGLGraphics grapher;
+    std::list<TwoArgumentsFunction_Plot> frames_with_objs;    //  Objects have to be stored outside the grapher
 
-    //  1. Create new grapher. We will use the same FunctionArg (hw)
-    MathGLGraphics grapher2;
-
-    // 2.  Now in the loop through the second argument (t)
-    // I`m going to create frames, objects, set properties (each frame has to be sut up individually)
-    // and pass it to the grapher.
-    //
-    // Attention! Grapher works with pointers, so linking a
-    // temporary object will cause a crash. All the Grapher objects should be alive;
-    //
-    //  I will save objects into a list
-    std::list<MathGLGraphicsObject *> objects;
-    for (double t = 0; t < 1; t += .1)
+    //  2) Animation loop, where setting properties and linking
+    for(t = 0; t < 3; t += 0.5)
     {
-        TwoArgumentsFunction_Plot *tmp = new TwoArgumentsFunction_Plot(S_solv, hw, t);
-        objects.push_back(tmp);
-        grapher2.link(objects.back());
-        grapher2.newFrame();
+        frames_with_objs.push_back(TwoArgumentsFunction_Plot(S_solv,hw,t));
+
+        grapher.parametres()->setTitle((std::to_string(t).c_str()));
+        grapher.parametres()->setRanges(0,3,0,3,0,3);
+        grapher.parametres()->setXLabel("hw");
+        grapher.parametres()->setYLabel("t");
+
+
+        grapher.link(&frames_with_objs.back());
+
+        grapher.newFrame();
     }
 
-    //  Setting properties
-    grapher2.setTitle("S_solv Animation");
-    grapher2.setRanges(0,2,0,2);
-    grapher2.plotQT("Animation");
-    std::list<MathGLGraphicsObject *>::iterator it = objects.begin();
-
-    //  deallocate memory from list
-    while (it != objects.end())
-    {
-        delete *it;
-        it++;
-    }
+    //  3) Plot
+    grapher.plotQT("S_solv");
+}
+int main()
+{
+    example1();
+    example2();
 
     return 0;
 }
