@@ -3,21 +3,26 @@
 //
 
 #include "../include/mathGL_graphics.h"
-#include <iostream>
 
+/*
+ * Constructors / Destructors
+ */
 MathGLGraphics::MathGLGraphics()
         : objectsList(1), frameParameters(1)
 {
-    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
+    std::list<MathGLGraphicsFrameParametres *>::iterator pt = frameParameters.begin();
     (*pt) = new MathGLGraphicsFrameParametres();
 }
 MathGLGraphics::~MathGLGraphics()
 {
-    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
-    while(pt!=frameParameters.end())
+    std::list<MathGLGraphicsFrameParametres *>::iterator pt = frameParameters.begin();
+    while (pt != frameParameters.end())
         delete (*pt++);
 }
 
+/*
+ * Getters
+ */
 MathGLGraphicsFrameParametres *MathGLGraphics::parametres()
 {
     return frameParameters.back();
@@ -44,16 +49,17 @@ int MathGLGraphics::Draw(mglGraph *gr)
     //  Iterator that goes through outer list,
     //  which represents frames
     std::list<std::list<const MathGLGraphicsObject *>>::iterator jt = objectsList.begin();
-    std::list<MathGLGraphicsFrameParametres*>::iterator pt = frameParameters.begin();
 
-    //  Iterator, which goes though inner list,
+    //  Iterator that goes through frame`s parameters
+    std::list<MathGLGraphicsFrameParametres *>::iterator pt = frameParameters.begin();
+
+    //  Iterator that goes though inner list,
     //  which represents MathGLGraphicObjects in a frame
     std::list<const MathGLGraphicsObject *>::iterator it;
 
     //  Loop which goes through frames and draws
     //  all the object in the frame
     //  (outer list = frames, inner list = objects)
-
     while (jt != objectsList.end())
     {
         it = jt->begin();

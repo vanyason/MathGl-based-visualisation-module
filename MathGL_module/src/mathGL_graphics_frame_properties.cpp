@@ -3,7 +3,6 @@
 //
 
 #include "../include/mathGL_graphics_frame_properties.h"
-#include <iostream>
 
 /*
  * Base component
@@ -14,7 +13,8 @@ void Parameter::draw(mglGraph *&gr)
     gr->Box();
 }
 Parameter::~Parameter()
-{ std::cout << "dest" << std::endl; }
+{}
+
 /*
  * Decorators :
  */
@@ -37,8 +37,8 @@ RotationDecorator::RotationDecorator(double rotx, double roty, double rotz, Para
 {}
 void RotationDecorator::draw(mglGraph *&gr)
 {
-    param->draw(gr);
     gr->Rotate(rotx, roty, rotz);
+    param->draw(gr);
 }
 //  Origin
 OriginDecorator::OriginDecorator(double ox, double oy, double oz, Parameter *param) :
@@ -46,8 +46,8 @@ OriginDecorator::OriginDecorator(double ox, double oy, double oz, Parameter *par
 {}
 void OriginDecorator::draw(mglGraph *&gr)
 {
-    param->draw(gr);
     gr->SetOrigin(ox, oy, oz);
+    param->draw(gr);
 }
 
 //  Title
@@ -56,8 +56,8 @@ TitleDecorator::TitleDecorator(const char *titleMessage, Parameter *param) :
 {}
 void TitleDecorator::draw(mglGraph *&gr)
 {
-    param->draw(gr);
     gr->Title(titleMessage);
+    param->draw(gr);
 }
 
 //  XLabel
@@ -91,7 +91,7 @@ void ZLabelDecorator::draw(mglGraph *&gr)
 }
 
 /*
- * Parametres object
+ * MathGLGraphicsFrameParametres object
  */
 MathGLGraphicsFrameParametres::MathGLGraphicsFrameParametres()
 {
@@ -127,9 +127,9 @@ void MathGLGraphicsFrameParametres::setXLabel(const char *xLabel)
 }
 void MathGLGraphicsFrameParametres::setYLabel(const char *yLabel)
 {
-    param = new XLabelDecorator(yLabel, param);
+    param = new YLabelDecorator(yLabel, param);
 }
 void MathGLGraphicsFrameParametres::setZLabel(const char *zLabel)
 {
-    param = new XLabelDecorator(zLabel, param);
+    param = new ZLabelDecorator(zLabel, param);
 }

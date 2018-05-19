@@ -12,7 +12,7 @@
 
 /**
  * Visualisation module based on MathGl library.
- * This class is a wrapper of the most common MathGl functions.
+ * This class is a wrapper for the most common MathGl functions.
  *
  * All the functions can be divided into 3 types:
  * 1) adding objects : funcs to create frames and add graphics to the result image
@@ -21,8 +21,8 @@
  *
  * HOWTO use this class:
  * 1)   Create an object that is going to be visualised (instance of MathGLGraphicsObject)
- * 2)   Set properties using setters
- * 3)   Add an object to the graph using the "add" function.
+ * 2)   Set properties using properties()->setters
+ * 3)   Add an object to the graph using the "link" function.
  * 4)   Plot or save image using appropriate methods
  */
 class MathGLGraphics : public mglDraw
@@ -34,19 +34,17 @@ public:
     //  Methods to link objects to graphics
     /**
      * Creates new blank frame. All the objects added before stays on the previous frame.
-     * All the graph properties remains
+     * All the graph properties resets
      */
     void newFrame();
     /**
      * @param obj pointer to an MathGLGraphicsObject object.
      *
-     * Adds graphic to a current frame.
+     * Links graphic to a current frame.
      * MathGLGraphics class doesn`t track the memory allocation and doesn`t provide
      * getters to access data.
      *
      * So DO NOT allocate memory via argument add(new(...)) because of the loss of a pointer.
-     *
-     * The solution is to pass a reference to an object created before calling;
      */
     void link(const MathGLGraphicsObject *obj);
 
@@ -61,22 +59,30 @@ public:
      * Save image to a bmp file named "'frame_count'_frame.bmp"
      */
     void saveBMP();
-
+    /**
+     * @return current frame`s properites
+     *
+     * Getter of the last element in the properties list
+     */
     MathGLGraphicsFrameParametres *parametres();
 
 
 private:
     int Draw(mglGraph *gr) override;
 
-    //  List of lists,  where
-    //  outer list for frames,
-    //  inner list for graphic objects
+    /**
+     *  List of lists,  where
+     *  outer list for frames,
+     *  inner list for graphic objects
+     */
     std::list<std::list<const MathGLGraphicsObject *>> objectsList;
-
+    /**
+     *  List of frames parameters.
+     */
     std::list<MathGLGraphicsFrameParametres *> frameParameters;
-
-
-    //  Save to bmp;
+    /**
+     *  Save to bmp;
+     */
     bool saveImageBMP = false;
 };
 

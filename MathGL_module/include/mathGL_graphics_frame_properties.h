@@ -7,7 +7,29 @@
 #include <mgl2/mgl.h>
 #include <memory>
 
-//  Draws Box and Axis
+/**
+ * Frame Parameters diagram:
+ *
+ *  ---------------------------------                 ------------
+ *  | MathGLGraphicsFrameParametres |      has       | Parameter |
+ *  ---------------------------------     ----->     ------------
+ *
+ *                                                         |
+ *                                             (extends)   |
+ *                                                         |
+ *                                                        \/
+ *                                                   ---------------
+ *                                                  | Decorators * |
+ *                                                  ---------------
+ *  Description:
+ *  MathGLGraphicsFrameParametres works as a controller. Class provides setters,
+ *  that create new Decorator objects. Function "draw" delegates func. call to the
+ *  decorator
+ */
+
+/**
+ * Concrete Parameter that draws Axis and Box
+ */
 class Parameter
 {
 public:
@@ -15,6 +37,9 @@ public:
     virtual ~Parameter();
 };
 
+/**
+ * Adds Ranges to the existing parameter
+ */
 class RangeDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -27,9 +52,11 @@ public:
                    double rz0, double rz1,
                    Parameter *param);
     virtual void draw(mglGraph *&gr);
-
 };
 
+/**
+ * Adds Rotation to the existing parameter
+ */
 class RotationDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -41,6 +68,9 @@ public:
     virtual void draw(mglGraph *&gr);
 };
 
+/**
+ * Adds Origin to the existing parameter
+ */
 class OriginDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -52,6 +82,9 @@ public:
     virtual void draw(mglGraph *&gr);
 };
 
+/**
+ * Adds Title to the existing parameter
+ */
 class TitleDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -61,6 +94,9 @@ public:
     virtual void draw(mglGraph *&gr);
 };
 
+/**
+ * Adds x axis Label to the existing parameter
+ */
 class XLabelDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -70,6 +106,9 @@ public:
     virtual void draw(mglGraph *&gr);
 };
 
+/**
+ * Adds y axis Label to the existing parameter
+ */
 class YLabelDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -79,6 +118,9 @@ public:
     virtual void draw(mglGraph *&gr);
 };
 
+/**
+ * Adds z axis Label to the existing parameter
+ */
 class ZLabelDecorator : public Parameter
 {
     std::shared_ptr<Parameter> param;
@@ -90,8 +132,8 @@ public:
 
 
 /**
- * Frame parameters implemented with "Decorator" pattern.
- *
+ * Class-Controller, where setters wrap existing parameter with decorators
+ * and "draw" function delegates func. calls to the Parameter. *
  */
 class MathGLGraphicsFrameParametres
 {
@@ -112,6 +154,5 @@ public:
     void setYLabel(const char *yLabel);
     void setZLabel(const char *zLabel);
 };
-
 
 #endif //MATHGL_MODULE_MATHGL_GRAPHICS_PROPERTIES_H
