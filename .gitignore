@@ -1,2 +1,4 @@
 /MathGL_module/.idea
 /MathGL_module/cmake-build-debug
+/MathGL_module/main.cpp
+/MathGL_module/CMakeLists.txt
