@@ -5,18 +5,21 @@ These classes written in C++11 provide functions for easy plotting one/two argum
 
 
 ## Installation
+#### Common part
 
-#### Linux (Debian based distros)
+ 1. Add source files to your project from the **MathGL_module/src**  and **MathGL_module/include** folders
+ 2. Install the original  [MathGl library](http://mathgl.sourceforge.net/doc_ru/Main.html#Main) . There is an instruction on the website, how to compile it from source.
 
- 1. Get the MathGL library (version with the QT) installed on the computer. To do this, you can try Synaptic Packet Manager to find **mathgl** and **mathgl-dev** packages. Other way is to get  MathGL and compile with CMake building tool from [sources](http://mathgl.sourceforge.net/doc_ru/Main.html#Main) 
- 2. Clone the repo and copy files from the directory **MathGL_module** to your project
- 3. You are ready to go. To compile your program use``g++ your_files_and_compilation_flags functionArg.cpp mathGL_Graphics.cpp mathGL_Graphics_Object.cpp -lmgl -lmgl-qt -std=gnu++11``
+#### Linux (Debian based distros) MathGl library installation (lazy way)
 
-#### Windows (Visual Studio)
+ 3. Get the MathGL library (version with the QT) installed on the computer using Synaptic Packet Manager. Find **mathgl** and **mathgl-dev** packages and get them
+ 4. You are ready to go. To compile your program use``g++ your_files_and_compilation_flags functionArg.cpp mathGL_Graphics.cpp mathGL_Graphics_Object.cpp -lmgl -lmgl-qt -std=gnu++11``
 
- 1. You have to get MathGL library first as well. You can compile it using CMake building system from sources for your version of the Visual Studio. The other way you can try to use precompiled binaries form the **Binary versions** folder (from the repo). In this folder you can find versions for the **Visual Studio 2012, 2013, 2015, 2017 under Windows 7**.
- 2. Make a C++ project and link it to the MathGl binary version. How link library you can easily find on the Internet. Don`t forget to **copy the bin folder contents** to the folder with your executable
- 3. Copy the module source files to your project and  change the build type of your project to **Release** if you use precompiled binaries
+#### Windows (Visual Studio) MathGl library installation (lazy way)
+
+ 3. You can try to use precompiled binaries form the **Binary versions** folder (from the repo). In this folder you can find versions for the **Visual Studio 2012, 2013, 2015, 2017 under Windows 7**.
+ 4. Make a C++ project and link it to the MathGl binary version. How to link a library you can easily find on the Internet. Don`t forget to **copy the bin folder contents** to the folder with your executable
+ 5. Change the build type of your project to **Release** if you use precompiled binaries
 
 ## Quick usage guide
 
@@ -28,41 +31,45 @@ These classes written in C++11 provide functions for easy plotting one/two argum
 
 **Code example:**
 
+    #include "../include/mathGL_graphics.h"
+    #include <cmath>
+    #include <list>
+    #include <string>
+    
+    /**
+     *
+     * Example of plotting one argument function f(x) = sin(x) + 1,
+     * x [-10,10],
+     * Dots amount : 100
+     */
+    
+    double f(const double &x)
+    {
+        return sin(x) + 1;
+    }
+    
     int main()
     {
-    //  Creating QT window with a surface image to visualize S_vibr function
-    //	Prototype is below:
-    //	double S_vibr(const double& hw , const double& t) {
-    //	    double s_vibr; /*some calc*/ return s_vibr; }
-
-    //  1. Create grapher, graph object and arguments
-    MathGLGraphics grapher;
-    FunctionArg hw(0, 3, 200);
-    FunctionArg t(0, 3, 200);
-    TwoArgumentsFunction_Surf surface(S_vibr, hw, t);
-
-    //  2.  Set properties. By default there is no rotation, ranges doesnt fit our purpose
-    //  and so on
-    grapher.setRotation(70, 40, 0);
-    grapher.setRanges(0, 3, 0, 3, -1, 3);
-    grapher.setXAxisLabel("hw");
-    grapher.setYAxisLabel("t");
-    grapher.setZAxisLabel("f(hw,t)");
-    grapher.setTitle("luminescence spectra");
-
-    //  3.  Add object and Plot !
-    //  U can use mouse inside window to change size, location and more
-    grapher.add(&surface);
-    grapher.plotQT("3D Image");
-    return 0;
+        MathGLGraphics gr;
+        OneArgumentFunction_Plot obj(f, FunctionArg(-10, 10, 100));
+    
+        gr.parametres()->setRanges(-10, 10, 0, 2);
+    
+        gr.link(&obj);
+        gr.plotQT("sin(x)");
+    
+        return 0;
     }
 
 **Result:**
-![enter image description here](https://lh3.googleusercontent.com/Z-Eoy41zhQZWLhijiupwMX4WIJVePth-zYUD_dHyNDDlstHoDVBQKXzi0aDePFckRnUvkMggZx4R "3d Image")
+![Result](https://github.com/vanyason/MathGl-based-visualization-module/blob/master/Screenshots/example1.png)
 
+## Check the Wiki to find more examples and to understand the project structure
+
+[Visit this one](https://github.com/vanyason/MathGl-based-visualization-module/wiki)
 
 
 ## Known bugs
 
- - Sometimes setRanges() function causes program crash. This problem is inherited from original MathGL library. To avoid crash - change ranges just a little bit, so it doesn`t really affect your plot
+[Check here](https://github.com/vanyason/MathGl-based-visualization-module/issues)
 
